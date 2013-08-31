@@ -1,5 +1,5 @@
 #!/bin/sh
-v=$(uname -r)
+v=${LINUX_VERSION:-$(uname -r)}
 d=${BUILDDIR:-$PWD}
 for p in ${@##-*}
 do
