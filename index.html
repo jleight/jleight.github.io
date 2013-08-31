@@ -1,10 +1,11 @@
 #!/bin/sh
+v=$(uname -r)
 d=${BUILDDIR:-$PWD}
 for p in ${@##-*}
 do
 cd $d
 curl https://aur.archlinux.org/packages/${p:0:2}/$p/$p.tar.gz |tar xz
 cd $p
-sed -r "s/(linux[^=]*)=[^\"]+/\1=${$(uname -r)%-ARCH}/g" -i PKGBUILD
+sed -r "s/(linux[^=]*)=[^\"]+/\1=${v%-ARCH}/g" -i PKGBUILD
 makepkg ${@##[^\-]*}
 done
