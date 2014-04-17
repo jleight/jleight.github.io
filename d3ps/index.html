@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>D3 Damage Calculator</title>
+  <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <script type="text/x-handlebars">
+    <div class="container">
+      <div class="page-header">
+        <h1>Diablo 3 Damage Calculator</h1>
+      </div>
+    </div>
+
+    <div class="container">
+      {{outlet}}
+    </div>
+  </script>
+
+  <script type="text/x-handlebars" id="stats">
+    <form action="#" method="GET" class="form-horizontal">
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Weapon 1</div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="weaponMinDamage1" class="col-sm-3 col-md-5 col-lg-4 control-label">Minimum Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="weaponMinDamage1" placeholder="1343" value=weaponMinDamage1 class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="weaponMaxDamage1" class="col-sm-3 col-md-5 col-lg-4 control-label">Maximum Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="weaponMaxDamage1" placeholder="1841" value=weaponMaxDamage1 class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="weaponAttacksPerSecond1" class="col-sm-3 col-md-5 col-lg-4 control-label">Attacks per Second</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="weaponAttacksPerSecond1" placeholder="1.47" value=weaponAttacksPerSecond1 class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 col-md-5 col-lg-4 control-label">Damage per Second</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <p class="form-control-static">{{weaponDamagePerSecond1}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Weapon 2</div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="weaponMinDamage2" class="col-sm-3 col-md-5 col-lg-4 control-label">Minimum Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="weaponMinDamage2" placeholder="1287" value=weaponMinDamage2 class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="weaponMaxDamage2" class="col-sm-3 col-md-5 col-lg-4 control-label">Maximum Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="weaponMaxDamage2" placeholder="1763" value=weaponMaxDamage2 class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="weaponAttacksPerSecond2" class="col-sm-3 col-md-5 col-lg-4 control-label">Attacks per Second</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="weaponAttacksPerSecond2" placeholder="1.4" value=weaponAttacksPerSecond2 class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 col-md-5 col-lg-4 control-label">Damage per Second</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <p class="form-control-static">{{weaponDamagePerSecond2}}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-default">
+            <div class="panel-heading">Character Stats</div>
+            <div class="panel-body">
+              <div class="form-group">
+                <label for="primaryAttribute" class="col-sm-3 col-md-5 col-lg-4 control-label">Primary Attribute</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  {{input type="text" id="primaryAttribute" placeholder="7490" value=primaryAttribute class="form-control"}}
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="attackSpeed" class="col-sm-3 col-md-5 col-lg-4 control-label">Attack Speed</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <div class="input-group">
+                    {{input type="text" id="attackSpeed" placeholder="46.4" value=attackSpeed class="form-control"}}
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="criticalHitChance" class="col-sm-3 col-md-5 col-lg-4 control-label">Critical HIt Chance</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <div class="input-group">
+                    {{input type="text" id="criticalHitChance" placeholder="41.5" value=criticalHitChance class="form-control"}}
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="criticalHitDamage" class="col-sm-3 col-md-5 col-lg-4 control-label">Critical Hit Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <div class="input-group">
+                    {{input type="text" id="criticalHitDamage" placeholder="423" value=criticalHitDamage class="form-control"}}
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label for="passiveDamage" class="col-sm-3 col-md-5 col-lg-4 control-label">Passive Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <div class="input-group">
+                    {{input type="text" id="passiveDamage" placeholder="8" value=passiveDamage class="form-control"}}
+                    <span class="input-group-addon">%</span>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 col-md-5 col-lg-4 control-label">Damage</label>
+                <div class="col-sm-9 col-md-7 col-lg-8">
+                  <p class="form-control-static">{{totalDamage}}</p>
+                </div>
+              </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-md-6">
+            <div class="panel panel-default">
+              <div class="panel-heading">Damage Per Stat</div>
+              <div class="panel-body">
+                <p>Each number represents how much damage you will gain by increasing the specified stat by 1.</p>
+                <p>Critical Hit Chance damage is based on an increase of 0.5 instead of 1.</p>
+                <dl class="dl-horizontal">
+                  <dt>Weapon Damage</dt>
+                  <dd>{{diffPlusOneWeaponDamage}}</dd>
+                  <dt>Primary Attribute</dt>
+                  <dd>{{diffPlusOnePrimaryAttribute}}</dd>
+                  <dt>Critical Hit Chance</dt>
+                  <dd>{{diffPlusOneCriticalHitChance}}</dd>
+                  <dt>Critical Hit Damage</dt>
+                  <dd>{{diffPlusOneCriticalHitDamage}}</dd>
+                  <dt>Attack Speed</dt>
+                  <dd>{{diffPlusOneAttackSpeed}}</dd>
+                  <dt>Passive Damage</dt>
+                  <dd>{{diffPlusOnePassiveDamage}}</dd>
+                </dl>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </script>
+
+  <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/1.1.2/handlebars.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ember.js/1.5.0/ember.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/ember-data.js/1.0.0-beta.7/ember-data.min.js"></script>
+  <script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+  <script src="js/app.js"></script>
+  <script src="js/router.js"></script>
+  <script src="js/models/character.js"></script>
+  <script src="js/controllers/stats_controller.js"></script>
+</body>
+</html>
