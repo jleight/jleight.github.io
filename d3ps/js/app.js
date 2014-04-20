@@ -1,3 +1,7 @@
+Ember.Handlebars.helper('locale', function (number) {
+  return number.toLocaleString();
+});
+
 (function (Calc) {
   Calc.ApplicationAdapter = DS.FixtureAdapter.extend();
 

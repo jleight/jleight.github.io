@@ -38,7 +38,7 @@
   //
   // Calculations
   function weaponDamagePerSecond(min, max, aps) {
-    return (aps * (min + max) / 2).toFixed(1);
+    return +(aps * (min + max) / 2).toFixed(1);
   }
 
   function primaryAttributeDamageModifier() {
