@@ -77,8 +77,26 @@
     return 1 + percent(total);
   }
 
+  function elementalDamageModifier() {
+    var total = Array.prototype.reduce.call(arguments, sum);
+    return 1 + percent(total);
+  }
+
+  function eliteDamageModifier() {
+    var total = Array.prototype.reduce.call(arguments, sum);
+    return 1 + percent(total);
+  }
+
   function totalDamage(s, c, r, a, m) {
     return Math.round(s * c * r * a * m);
+  }
+
+  function totalElementalDamage(s, c, r, a, m, e) {
+    return Math.round(s * c * r * a * m * e);
+  }
+
+  function totalEliteDamage(s, c, r, a, m, e, l) {
+    return Math.round(s * c * r * a * m * e * l);
   }
 
 
@@ -122,6 +140,16 @@
     passiveDamageMultiplier: prop(passiveDamageModifier, 'passiveDamage'),
     passiveDamagePlusOneMultiplier: prop(passiveDamageModifier, 'passiveDamagePlusOne'),
 
+    elementalDamage: DS.attr('number'),
+    elementalDamagePlusOne: prop(plusOne, 'elementalDamage'),
+    elementalDamageMultiplier: prop(elementalDamageModifier, 'elementalDamage'),
+    elementalDamagePlusOneMultiplier: prop(elementalDamageModifier, 'elementalDamagePlusOne'),
+
+    eliteDamage: DS.attr('number'),
+    eliteDamagePlusOne: prop(plusOne, 'eliteDamage'),
+    eliteDamageMultiplier: prop(eliteDamageModifier, 'eliteDamage'),
+    eliteDamagePlusOneMultiplier: prop(eliteDamageModifier, 'eliteDamagePlusOne'),
+
     totalDamage: prop(totalDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier'),
     totalDamagePlusOneWeaponDamage: prop(totalDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamagePlusOneMultiplier', 'passiveDamageMultiplier'),
     totalDamagePlusOnePrimaryAttribute: prop(totalDamage, 'primaryAttributePlusOneMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier'),
@@ -130,12 +158,21 @@
     totalDamagePlusOneAttackSpeed: prop(totalDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedPlusOneMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier'),
     totalDamagePlusOnePassiveDamage: prop(totalDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamagePlusOneMultiplier'),
 
+    totalElementalDamage: prop(totalElementalDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier', 'elementalDamageMultiplier'),
+    totalElementalDamagePlusOne: prop(totalElementalDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier', 'elementalDamagePlusOneMultiplier'),
+
+    totalEliteDamage: prop(totalEliteDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier', 'elementalDamageMultiplier', 'eliteDamageMultiplier'),
+    totalEliteDamagePlusOne: prop(totalEliteDamage, 'primaryAttributeMultiplier', 'criticalDamageMultiplier', 'attackSpeedMultiplier', 'averageDamageMultiplier', 'passiveDamageMultiplier', 'elementalDamageMultiplier', 'eliteDamagePlusOneMultiplier'),
+    
     diffPlusOneWeaponDamage: prop(sub, 'totalDamagePlusOneWeaponDamage', 'totalDamage'),
     diffPlusOnePrimaryAttribute: prop(sub, 'totalDamagePlusOnePrimaryAttribute', 'totalDamage'),
     diffPlusOneCriticalHitChance: prop(sub, 'totalDamagePlusOneCriticalHitChance', 'totalDamage'),
     diffPlusOneCriticalHitDamage: prop(sub, 'totalDamagePlusOneCriticalHitDamage', 'totalDamage'),
     diffPlusOneAttackSpeed: prop(sub, 'totalDamagePlusOneAttackSpeed', 'totalDamage'),
-    diffPlusOnePassiveDamage: prop(sub, 'totalDamagePlusOnePassiveDamage', 'totalDamage')
+    diffPlusOnePassiveDamage: prop(sub, 'totalDamagePlusOnePassiveDamage', 'totalDamage'),
+
+    diffPlusOneElementalDamage: prop(sub, 'totalElementalDamagePlusOne', 'totalElementalDamage'),
+    diffPlusOneEliteDamage: prop(sub, 'totalEliteDamagePlusOne', 'totalEliteDamage')
   });
 
   Calc.Character.FIXTURES = [{
@@ -157,6 +194,10 @@
 
     attackSpeed: 46.4,
 
-    passiveDamage: 8
+    passiveDamage: 8,
+
+    elementalDamage: 54,
+
+    eliteDamage: 0
   }];
 })(window.Calc);
