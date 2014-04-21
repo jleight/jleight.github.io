@@ -1,0 +1,7 @@
+.popover {
+  max-width: initial;
+}
+
+.popover > .arrow {
+  display: none;
+}
