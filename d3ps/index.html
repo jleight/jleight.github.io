@@ -11,7 +11,7 @@
   <script type="text/x-handlebars">
     <div class="container">
       <div class="page-header">
-        <h1>Diablo 3 Damage Calculator <small><a href="#" id="style-toggle">Light/Dark Theme</a></small></h1>
+        <h1>Diablo 3 Damage Calculator <small><a href="#" id="style-toggle">Light/Dark Theme</a>, {{#link-to 'calculation'}}Calculation{{/link-to}}</small></h1>
       </div>
     </div>
 
@@ -208,6 +208,104 @@
         </div>
       </div>
     </form>
+  </script>
+
+  <script type="text/x-handlebars" id="calculation">
+  <h1 id="how-sheet-damage-is-calculated">How Sheet Damage is Calculated</h1>
+    <p>Sheet damage in Diablo III is calculated based on the following five factors:</p>
+    <ol>
+      <li>Average Weapon Damage</li>
+      <li>Primary Attribute Modifier</li>
+      <li>Critical Modifier</li>
+      <li>Attack Speed Modifier</li>
+      <li>Passive Damage Modifier</li>
+    </ol>
+    <p>Each modifier is purely beneficial to your damage. If you have no extra points in the stats that a modifier is based on, the modifier will have a value of 1 so that in the final calculation it will not reduce your damage.</p>
+    <p>I will go into detail on how each of the five factors is calculated.</p>
+    <h2 id="average-weapon-damage">Average Weapon Damage</h2>
+    <p>To calculate average weapon damage, look for the minimum and maximum damage on each of your weapons, along with any bonus minimum/maximum damage from other pieces of gear.</p>
+    <p>For example, if your gear has the following stats:</p>
+    <pre><code>Weapon 1: 1343 to 1841 Damage
+Weapon 2: 1287 to 1763 Damage
+Ring 1: 30 to 50 Damage
+</code></pre>
+    <p>Add the ring damage to each weapon to get the total weapon damage for each weapon:</p>
+    <pre><code>Weapon 1: (1373 + 30) to (1841 + 50) Damage
+Weapon 1: 1373 to 1891 Damage
+
+Weapon 2: (1287 + 30) to (1813 + 50) Damage
+Weapon 2: 1317 to 1813 Damage
+</code></pre>
+    <p>... then find the average:</p>
+    <pre><code>Average = (1373 + 1891 + 1317 + 1813) / 4
+Average = 6394 / 4
+Average = 1598.5
+</code></pre>
+    <p>If you only have one weapon, only add the minimum and maximum damage from the adjusted weapon damage and divide by two instead of four.</p>
+    <p>If you have an off-hand that doesn't actually attack like a focus or mojo, just add its bonus damage to your main-hand weapon. Then run the calculation as if you only have one weapon equipped.</p>
+    <h2 id="primary-attribute-modifier">Primary Attribute Modifier</h2>
+    <p>The primary attribute modifier is calculated by starting with 1, and then adding 1% for each point in your primary attribute.</p>
+    <p>To calculate it, we use this formula:</p>
+    <pre><code>Modifier = 1 + (Primary Attribute / 100)
+</code></pre>
+    <p>So if you have 7490 points in your primary attribute, your modifier would be:</p>
+    <pre><code>Modifier = 1 + (7490 / 100)
+Modifier = 1 + 74.9
+Modifier = 75.9
+</code></pre>
+    <h2 id="critical-modifier">Critical Modifier</h2>
+    <p>The critical modifier determines how much your critical hit chance and critical hit damage will affect your overall damage.</p>
+    <p>To calculate it, we use this formula:</p>
+    <pre><code>Modifier = 1 + (Crit Chance * Crit Damage)
+</code></pre>
+    <p>So if you have a 41.5% crit chance and 423% bonus damage, your modifier would be:</p>
+    <pre><code>Modifier = 1 + (0.415 * 4.23)
+Modifier = 1 + 1.75545
+Modifier = 2.75545
+</code></pre>
+    <h2 id="attack-speed-modifier">Attack Speed Modifier</h2>
+    <h3 id="warning">Warning</h3>
+    <p>This is the tricky one. If you have bonus attack speed on your weapon, you first need to figure out the exact number of attacks per second the weapon has since the tooltips in-game will round to two decimal places.</p>
+    <p>If you have a 1.4 attacks per second weapon with 7% attack speed on it, the attacks per second number below the minimum and maximum damage numbers will read "1.5 Attacks per Second." The problem with this is that 1.4 * 1.07 is actually 1.498, not
+      1.5.</p>
+    <p>For the rest of this section, it is assumed that you will use the real attacks per second rather than the rounded one from the tooltip.</p>
+    <h3 id="single-weapon-modifier-calculation">Single Weapon Modifier Calculation</h3>
+    <p>If you use only a single weapon, or a one-hand weapon and an off-hand like a focus or mojo, your modifier calculation is easy:</p>
+    <pre><code>Modifier = 1 + (Bonus Attack Speed * Attacks Per Second)
+</code></pre>
+    <p>If your weapon has a tooltip attack speed of 1.4 attacks per second, and you have 46.4% bonus attack speed, your modifier is:</p>
+    <pre><code>Modifier = 1 + (0.464 * 1.4)
+Modifier = 1 + 0.6496
+Modifier = 1.6496
+</code></pre>
+    <h3 id="dual-wield-modifier-calculation">Dual-Wield Modifier Calculation</h3>
+    <p>However, if you dual-wield, you need to calculate your actual attacks per second instead of using one of your weapon's attacks per second.</p>
+    <p>Your average attacks per second when dual-wielding is not simply the average of the two weapon's attacks per second. It's actually:</p>
+    <pre><code>Average APS = (2 * APS1 * APS2) / (APS1 + APS2)
+</code></pre>
+    <p>... where APS1 is weapon 1's tooltip attacks per second and APS2 is weapon 2's tooltip attacks per second.</p>
+    <p>If you have two weapons, one with 1.47 attacks per second and the other with 1.4 attacks per second, your modifier would be:</p>
+    <pre><code>Modifier = 1 + ((2 * 1.47 * 1.4) / (1.47 + 1.4))
+Modifier = 1 + (4.116 / 2.87)
+Modifier = 1 + 1.43414634...
+Modifier = 2.43414634...
+</code></pre>
+    <h2 id="passive-damage-modifier">Passive Damage Modifier</h2>
+    <p>The passive damage modifier is based on your passive skills and buffs.</p>
+    <pre><code>Modifier = 1 + Sum(All Passive Damage Buffs)
+  </code></pre>
+    <p>If you have a passive skill that increases your damage by 8%, and a buff that you always keep up that increases your damage by another 15%, your passive damage modifier is:</p>
+    <pre><code>Modifier = 1 + (0.08 + 0.15)
+Modifier = 1 + 0.23
+Modifier = 1.23
+</code></pre>
+    <h2 id="sheet-damage-calculation">Sheet Damage Calculation</h2>
+    <p>Now that you have your average damage and the four modifiers, calculating your sheet damage is as easy as multiplying them all together.</p>
+    <p>Using the numbers calculated above:</p>
+    <pre><code>Sheet Damage = 1589.5 * 75.9 * 2.75545 * 2.43414634... * 1.23
+Sheet Damage = 995283.121015...
+Sheet Damage = 995283
+</code></pre>
   </script>
 
   <script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
